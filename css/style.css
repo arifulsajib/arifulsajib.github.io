@@ -10,7 +10,7 @@ body {
   width: 100%;
   position: absolute;
   z-index: 3;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 /* Sliders */
@@ -50,12 +50,13 @@ body {
 .titleMessage .heading p {
   color: #e5e1e1;
   text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
-  font-weight: 100;
+  font-weight: 400;
   letter-spacing: 7px;
 }
 
 .titleMessage .heading .main {
   font-size: 40px;
+  font-weight: 400;
 }
 
 .titleMessage .heading .sub {

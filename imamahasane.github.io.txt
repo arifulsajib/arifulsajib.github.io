@@ -1,0 +1,2991 @@
+Directory structure:
+└── imamahasane-imamahasane.github.io/
+    ├── README.md
+    ├── eslint.config.mjs
+    ├── next.config.ts
+    ├── package.json
+    ├── postcss.config.mjs
+    ├── tsconfig.json
+    ├── public/
+    │   └── .nojekyll
+    ├── src/
+    │   ├── app/
+    │   │   ├── globals.css
+    │   │   ├── layout.tsx
+    │   │   ├── not-found.tsx
+    │   │   ├── page.tsx
+    │   │   ├── robots.ts
+    │   │   ├── sitemap.ts
+    │   │   ├── achievements/
+    │   │   │   └── page.tsx
+    │   │   ├── gallery/
+    │   │   │   └── page.tsx
+    │   │   ├── projects/
+    │   │   │   └── page.tsx
+    │   │   ├── publications/
+    │   │   │   └── page.tsx
+    │   │   └── service/
+    │   │       └── page.tsx
+    │   ├── components/
+    │   │   ├── AchievementCard.tsx
+    │   │   ├── AvatarPlaceholder.tsx
+    │   │   ├── Badge.tsx
+    │   │   ├── BibtexButton.tsx
+    │   │   ├── Footer.tsx
+    │   │   ├── icons.tsx
+    │   │   ├── MotionSection.tsx
+    │   │   ├── Navbar.tsx
+    │   │   ├── NewsList.tsx
+    │   │   ├── ProjectCard.tsx
+    │   │   ├── PublicationCard.tsx
+    │   │   ├── ResearchCard.tsx
+    │   │   ├── Section.tsx
+    │   │   ├── SocialLinks.tsx
+    │   │   ├── StatsStrip.tsx
+    │   │   ├── ThemeProvider.tsx
+    │   │   └── ThemeToggle.tsx
+    │   ├── data/
+    │   │   ├── achievements.ts
+    │   │   ├── gallery.ts
+    │   │   ├── news.ts
+    │   │   ├── profile.ts
+    │   │   ├── projects.ts
+    │   │   ├── publications.ts
+    │   │   ├── research.ts
+    │   │   └── service.ts
+    │   ├── lib/
+    │   │   ├── nav.ts
+    │   │   └── utils.ts
+    │   └── types/
+    │       └── index.ts
+    └── .github/
+        └── workflows/
+            └── deploy.yml
+
+================================================
+FILE: README.md
+================================================
+# Md Imam Ahasan — Academic Homepage
+
+Personal academic website for Md Imam Ahasan, Computer Science researcher
+working on physics-informed deep learning and diffusion models for medical
+image reconstruction, with an emphasis on low-dose CT.
+
+Live at **[imamahasane.github.io](https://imamahasane.github.io)**.
+
+## Stack
+
+Next.js (App Router, static export) · TypeScript · Tailwind CSS · Framer
+Motion · MDX
+
+## Structure
+
+- `src/app/` — routes (Home, Research, Publications, Projects, Teaching,
+  Achievements, Blog, CV, Contact)
+- `src/components/` — shared UI components
+- `src/data/` — typed content (publications, research projects, education,
+  achievements, teaching)
+- `content/blog/` — MDX blog posts
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Deployment
+
+Static export, deployed automatically to GitHub Pages via
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) on every push
+to `main`.
+
+
+
+================================================
+FILE: eslint.config.mjs
+================================================
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  // Override default ignores of eslint-config-next.
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
+
+export default eslintConfig;
+
+
+
+================================================
+FILE: next.config.ts
+================================================
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  output: "export",
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
+};
+
+export default nextConfig;
+
+
+
+================================================
+FILE: package.json
+================================================
+{
+  "name": "emamahasane-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.42.2",
+    "lucide-react": "^1.24.0",
+    "next": "16.2.10",
+    "next-themes": "^0.4.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.10",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
+
+
+
+================================================
+FILE: postcss.config.mjs
+================================================
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+
+
+
+================================================
+FILE: tsconfig.json
+================================================
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}
+
+
+
+================================================
+FILE: public/.nojekyll
+================================================
+[Empty file]
+
+
+================================================
+FILE: src/app/globals.css
+================================================
+@import "tailwindcss";
+
+:root {
+  --background: #faf9f6;
+  --foreground: #1c1c1c;
+  --muted: #6b6b6b;
+  --border: #e4e1d8;
+  --accent: #1e3a5f;
+  --accent-soft: #eff3f7;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-source-serif);
+  --font-mono: var(--font-plex-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #15171a;
+    --foreground: #ededea;
+    --muted: #9a9a94;
+    --border: #2c2f33;
+    --accent: #7fa8d9;
+    --accent-soft: #1c2733;
+  }
+}
+
+/* Manual theme override (ThemeToggle) takes precedence over system preference */
+:root[data-theme="dark"] {
+  --background: #15171a;
+  --foreground: #ededea;
+  --muted: #9a9a94;
+  --border: #2c2f33;
+  --accent: #7fa8d9;
+  --accent-soft: #1c2733;
+}
+
+:root[data-theme="light"] {
+  --background: #faf9f6;
+  --foreground: #1c1c1c;
+  --muted: #6b6b6b;
+  --border: #e4e1d8;
+  --accent: #1e3a5f;
+  --accent-soft: #eff3f7;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  p,
+  li {
+    text-align: justify;
+    hyphens: auto;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+
+================================================
+FILE: src/app/layout.tsx
+================================================
+import type { Metadata } from "next";
+import { Inter, Source_Serif_4, IBM_Plex_Mono } from "next/font/google";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ThemeProvider from "@/components/ThemeProvider";
+import "./globals.css";
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+});
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+const description =
+  "Md Imam Ahasan (Imam Ahasan) is an AI and computer vision researcher working on medical image analysis and visual perception, with a primary focus on physics-informed diffusion models for low-dose CT reconstruction. PhD applicant, M.Sc. Computer Science, Chongqing University.";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Md Imam Ahasan | AI & Computer Vision Researcher",
+    template: "%s | Md Imam Ahasan",
+  },
+  description,
+  keywords: [
+    "Md Imam Ahasan",
+    "Imam Ahasan",
+    "AI researcher",
+    "computer vision",
+    "medical imaging",
+    "diffusion models",
+    "low-dose CT reconstruction",
+    "Chongqing University",
+    "PhD applicant",
+  ],
+  openGraph: {
+    title: "Md Imam Ahasan | AI & Computer Vision Researcher",
+    description,
+    type: "website",
+    siteName: "Md Imam Ahasan",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Md Imam Ahasan | AI & Computer Vision Researcher",
+    description,
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${sourceSerif.variable} ${plexMono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col font-sans bg-background text-foreground">
+        <ThemeProvider>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-white"
+          >
+            Skip to content
+          </a>
+          <Navbar />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+
+
+
+================================================
+FILE: src/app/not-found.tsx
+================================================
+import Link from "next/link";
+import Section from "@/components/Section";
+
+export default function NotFound() {
+  return (
+    <Section width="prose" className="pt-24 text-center md:pt-32">
+      <h1 className="font-serif text-3xl font-semibold text-foreground">
+        Page not found
+      </h1>
+      <p className="mt-3 text-center text-muted">
+        The page you&apos;re looking for doesn&apos;t exist.
+      </p>
+      <Link
+        href="/"
+        className="mt-6 inline-block text-accent underline underline-offset-4 hover:opacity-80"
+      >
+        Back to home
+      </Link>
+    </Section>
+  );
+}
+
+
+
+================================================
+FILE: src/app/page.tsx
+================================================
+import Image from "next/image";
+import Link from "next/link";
+import { profile } from "@/data/profile";
+import { firstAuthorPublications, publications } from "@/data/publications";
+import Section from "@/components/Section";
+import PublicationCard from "@/components/PublicationCard";
+import SocialLinks from "@/components/SocialLinks";
+import MotionSection from "@/components/MotionSection";
+import StatsStrip from "@/components/StatsStrip";
+import NewsList from "@/components/NewsList";
+import ResearchCard from "@/components/ResearchCard";
+import { flagshipProjects, forwardLookingDirection } from "@/data/research";
+import { newsItems } from "@/data/news";
+
+const stats = [
+  { value: String(publications.length), label: "Publications" },
+  { value: String(firstAuthorPublications.length), label: "First-Author" },
+  { value: "Top 1%", label: "International Cohort" },
+  { value: "KAIST", label: "Collaboration" },
+];
+
+const scholarLink = profile.social.find((s) => s.icon === "scholar");
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  alternateName: "Imam Ahasan",
+  jobTitle: "AI and Computer Vision Researcher / PhD Applicant",
+  affiliation: {
+    "@type": "CollegeOrUniversity",
+    name: profile.affiliation,
+  },
+  email: `mailto:${profile.email}`,
+  sameAs: profile.social
+    .filter((s) => s.icon !== "mail")
+    .map((s) => s.url),
+};
+
+export default function Home() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
+
+      <Section width="wide" className="pb-8 pt-16 md:pt-24">
+        <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-center">
+          <div>
+            <p className="mb-3 text-sm font-medium uppercase tracking-wide text-accent">
+              PhD Applicant · Chongqing University
+            </p>
+            <h1 className="font-serif text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
+              {profile.tagline}
+            </h1>
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+              My primary focus is physics-informed diffusion models and
+              generative priors for medical image reconstruction -
+              particularly low-dose CT - alongside broader work in visual
+              recognition and scene understanding.
+            </p>
+            <p className="mt-6 max-w-2xl leading-relaxed text-foreground">
+              I am an AI and computer vision researcher working across
+              medical image analysis and visual perception. My thesis
+              develops physics-consistent diffusion and adversarial models
+              that reconstruct diagnostic-quality CT images from
+              reduced-radiation scans, and my broader research spans retinal
+              and dermatological image segmentation and visual perception
+              for autonomous systems. I am completing an M.Sc. in Computer
+              Science at Chongqing University, where this research forms the
+              basis of my thesis.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-6">
+              <Link
+                href="#flagship-projects"
+                className="rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+              >
+                Read my research
+              </Link>
+              <a
+                href="/cv/Md_Imam_Ahasan_CV.pdf"
+                download
+                className="text-sm font-medium text-accent underline underline-offset-4 hover:opacity-80"
+              >
+                Download CV
+              </a>
+            </div>
+            <SocialLinks links={profile.social} className="mt-8" />
+          </div>
+          <Image
+            src="/images/profile.jpg"
+            alt={profile.name}
+            width={800}
+            height={600}
+            priority
+            className="hidden aspect-[16/10] w-80 shrink-0 rounded-2xl border border-border object-cover shadow-sm md:block lg:w-[26rem] xl:w-[30rem]"
+          />
+        </div>
+      </Section>
+
+      <Section width="wide" className="py-0">
+        <MotionSection>
+          <StatsStrip
+            stats={stats}
+            link={
+              scholarLink
+                ? { label: "Google Scholar", url: scholarLink.url }
+                : undefined
+            }
+          />
+        </MotionSection>
+      </Section>
+
+      <Section width="prose">
+        <MotionSection>
+          <h2 className="mb-6 font-serif text-2xl font-semibold text-foreground">
+            News
+          </h2>
+          <NewsList items={newsItems} />
+        </MotionSection>
+      </Section>
+
+      <Section width="wide">
+        <MotionSection>
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <h2 className="font-serif text-2xl font-semibold text-foreground">
+              Featured Publications
+            </h2>
+            <Link
+              href="/publications"
+              className="text-sm text-accent underline underline-offset-4 hover:opacity-80"
+            >
+              View all publications
+            </Link>
+          </div>
+        </MotionSection>
+        <div className="grid gap-5 md:grid-cols-2">
+          {firstAuthorPublications.map((pub, i) => (
+            <MotionSection key={pub.id} index={i}>
+              <PublicationCard publication={pub} compact />
+            </MotionSection>
+          ))}
+        </div>
+      </Section>
+
+      <Section width="wide" className="pt-0" id="flagship-projects">
+        <MotionSection>
+          <h2 className="mb-8 font-serif text-2xl font-semibold text-foreground">
+            Flagship Projects
+          </h2>
+        </MotionSection>
+        <div className="space-y-6">
+          {flagshipProjects.map((project, i) => (
+            <MotionSection key={project.slug} index={i}>
+              <ResearchCard project={project} />
+            </MotionSection>
+          ))}
+        </div>
+        <MotionSection>
+          <p className="mt-8 max-w-2xl leading-relaxed text-muted">
+            {forwardLookingDirection}
+          </p>
+        </MotionSection>
+      </Section>
+
+      <Section width="prose">
+        <MotionSection>
+          <h2 className="mb-4 font-serif text-2xl font-semibold text-foreground">
+            Biography
+          </h2>
+          <p className="leading-relaxed text-foreground">
+            I was born and raised in Bangladesh, where I completed my B.Sc.
+            in Computer Science and Engineering at Daffodil International
+            University in 2021. As a lab assistant in the Data Science Lab
+            there, I built and evaluated machine learning and deep learning
+            models - including breast cancer classification - under Dr. Md
+            Zahid Hasan, and briefly taught
+            ICT at Anupama International School and College in Dhaka. In
+            2023, I moved to Chongqing, China, to pursue an M.Sc. in
+            Computer Science at Chongqing University, where my research
+            shifted toward physics-informed generative models for low-dose
+            CT reconstruction under Dr. Guangchao Yang. Outside the lab, I
+            co-founded Shopner Khoje, a charitable organization, in 2017,
+            and in 2026 I was recognized as one of Chongqing
+            University&rsquo;s top 1% international graduates.
+          </p>
+        </MotionSection>
+      </Section>
+
+      <Section width="prose" className="pt-0">
+        <MotionSection>
+          <h2 className="mb-3 font-serif text-2xl font-semibold text-foreground">
+            Get in Touch
+          </h2>
+          <p className="text-muted">
+            I welcome inquiries from prospective advisors, collaborators,
+            and researchers.
+          </p>
+          <div className="mt-4 flex flex-col gap-2 text-sm">
+            <a
+              href={`mailto:${profile.email}`}
+              className="text-accent underline underline-offset-2 hover:opacity-80"
+            >
+              {profile.email}
+            </a>
+            {profile.secondaryEmail && (
+              <a
+                href={`mailto:${profile.secondaryEmail}`}
+                className="text-accent underline underline-offset-2 hover:opacity-80"
+              >
+                {profile.secondaryEmail}{" "}
+                <span className="text-muted">(Chongqing University)</span>
+              </a>
+            )}
+          </div>
+        </MotionSection>
+      </Section>
+    </>
+  );
+}
+
+
+
+================================================
+FILE: src/app/robots.ts
+================================================
+import type { MetadataRoute } from "next";
+
+export const dynamic = "force-static";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+    },
+    sitemap: `${siteUrl}/sitemap.xml`,
+  };
+}
+
+
+
+================================================
+FILE: src/app/sitemap.ts
+================================================
+import type { MetadataRoute } from "next";
+
+export const dynamic = "force-static";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+const staticRoutes = [
+  "",
+  "/publications",
+  "/projects",
+  "/achievements",
+  "/service",
+  "/gallery",
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return staticRoutes.map((route) => ({
+    url: `${siteUrl}${route}`,
+    lastModified: new Date(),
+  }));
+}
+
+
+
+================================================
+FILE: src/app/achievements/page.tsx
+================================================
+import type { Metadata } from "next";
+import Section from "@/components/Section";
+import AchievementCard from "@/components/AchievementCard";
+import MotionSection from "@/components/MotionSection";
+import { achievements } from "@/data/achievements";
+import { startYear } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "Achievements",
+  description: "Awards and honors.",
+};
+
+export default function AchievementsPage() {
+  const timelineItems = [...achievements].sort(
+    (a, b) => startYear(b.date) - startYear(a.date),
+  );
+
+  return (
+    <>
+      <Section width="prose" className="pb-4 pt-16 md:pt-24">
+        <h1 className="font-serif text-3xl font-semibold text-foreground">
+          Achievements
+        </h1>
+      </Section>
+
+      <Section width="wide" className="pt-0">
+        <div className="space-y-4">
+          {timelineItems.map((item, i) => (
+            <MotionSection key={item.id} index={i}>
+              <AchievementCard item={item} />
+            </MotionSection>
+          ))}
+        </div>
+      </Section>
+    </>
+  );
+}
+
+
+
+================================================
+FILE: src/app/gallery/page.tsx
+================================================
+import type { Metadata } from "next";
+import Image from "next/image";
+import Section from "@/components/Section";
+import MotionSection from "@/components/MotionSection";
+import { galleryItems } from "@/data/gallery";
+
+export const metadata: Metadata = {
+  title: "Gallery",
+  description: "Photos from research, awards, and campus life.",
+};
+
+export default function GalleryPage() {
+  return (
+    <>
+      <Section width="prose" className="pb-4 pt-16 md:pt-24">
+        <h1 className="font-serif text-3xl font-semibold text-foreground">
+          Gallery
+        </h1>
+      </Section>
+
+      <Section width="prose" className="pt-0">
+        <div className="space-y-16">
+          {galleryItems.map((item, i) => (
+            <MotionSection key={item.title} index={i}>
+              <figure>
+                <Image
+                  src={item.imageUrl}
+                  alt={item.title}
+                  width={1200}
+                  height={900}
+                  className="w-full rounded-lg border border-border"
+                />
+                <figcaption className="mt-3">
+                  <p className="font-serif text-lg font-semibold text-foreground">
+                    {item.title}
+                  </p>
+                  <p className="text-sm text-muted">{item.date}</p>
+                  <p className="mt-1 leading-relaxed text-foreground">
+                    {item.caption}
+                  </p>
+                </figcaption>
+              </figure>
+            </MotionSection>
+          ))}
+        </div>
+      </Section>
+    </>
+  );
+}
+
+
+
+================================================
+FILE: src/app/projects/page.tsx
+================================================
+import type { Metadata } from "next";
+import Link from "next/link";
+import Section from "@/components/Section";
+import ProjectCard from "@/components/ProjectCard";
+import MotionSection from "@/components/MotionSection";
+import { projects } from "@/data/projects";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Research code and open-source projects, distinct from the flagship research described on the homepage.",
+};
+
+export default function ProjectsPage() {
+  return (
+    <>
+      <Section width="prose" className="pb-8 pt-16 md:pt-24">
+        <h1 className="font-serif text-3xl font-semibold text-foreground">
+          Projects
+        </h1>
+        <p className="mt-3 text-muted">
+          Research code and engineering work, distinct from the flagship
+          projects described on the{" "}
+          <Link
+            href="/#flagship-projects"
+            className="text-accent underline underline-offset-2"
+          >
+            homepage
+          </Link>
+          .
+        </p>
+      </Section>
+
+      <Section width="wide" className="pt-0">
+        <div className="space-y-6">
+          {projects.map((project, i) => (
+            <MotionSection key={project.slug} index={i}>
+              <ProjectCard project={project} />
+            </MotionSection>
+          ))}
+        </div>
+      </Section>
+    </>
+  );
+}
+
+
+
+================================================
+FILE: src/app/publications/page.tsx
+================================================
+import type { Metadata } from "next";
+import Section from "@/components/Section";
+import PublicationCard from "@/components/PublicationCard";
+import Badge from "@/components/Badge";
+import MotionSection from "@/components/MotionSection";
+import { publications } from "@/data/publications";
+import { profile } from "@/data/profile";
+import { researchInterests } from "@/data/research";
+
+export const metadata: Metadata = {
+  title: "Publications",
+  description:
+    "Peer-reviewed conference and journal publications on medical imaging, diffusion models, and computer vision.",
+};
+
+const years = Array.from(new Set(publications.map((p) => p.year))).sort(
+  (a, b) => b - a,
+);
+
+const scholarlyArticlesJsonLd = publications.map((p) => ({
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  headline: p.title,
+  author: p.authors.map((name) => ({ "@type": "Person", name })),
+  ...(p.doi && { sameAs: `https://doi.org/${p.doi}` }),
+  datePublished: String(p.year),
+  publisher: p.venue,
+  creativeWorkStatus:
+    p.status === "under-review" ? "Under Review" : "Published",
+}));
+
+export default function PublicationsPage() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(scholarlyArticlesJsonLd),
+        }}
+      />
+      <Section width="prose" className="pb-8 pt-16 md:pt-24">
+        <h1 className="font-serif text-3xl font-semibold text-foreground">
+          Publications
+        </h1>
+        <p className="mt-3 text-muted">
+          {publications.length} peer-reviewed and under-review works.
+          First-author papers are marked. Full author list as printed;{" "}
+          <strong className="text-foreground">{profile.name}</strong>{" "}
+          bolded throughout.
+        </p>
+        <ul className="mt-5 flex flex-wrap gap-2">
+          {researchInterests.map((interest) => (
+            <li key={interest}>
+              <Badge>{interest}</Badge>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {years.map((year) => (
+        <Section key={year} width="wide" className="pt-0">
+          <MotionSection>
+            <h2 className="mb-6 font-serif text-2xl font-semibold text-foreground">
+              {year}
+            </h2>
+          </MotionSection>
+          <div className="grid gap-5 md:grid-cols-2">
+            {publications
+              .filter((p) => p.year === year)
+              .map((p, i) => (
+                <MotionSection key={p.id} index={i}>
+                  <PublicationCard publication={p} />
+                </MotionSection>
+              ))}
+          </div>
+        </Section>
+      ))}
+    </>
+  );
+}
+
+
+
+================================================
+FILE: src/app/service/page.tsx
+================================================
+import type { Metadata } from "next";
+import Section from "@/components/Section";
+import MotionSection from "@/components/MotionSection";
+import { peerReview, conferenceVolunteering } from "@/data/service";
+
+export const metadata: Metadata = {
+  title: "Service",
+  description: "Academic service: peer review and conference volunteering.",
+};
+
+export default function ServicePage() {
+  return (
+    <>
+      <Section width="prose" className="pb-4 pt-16 md:pt-24">
+        <h1 className="font-serif text-3xl font-semibold text-foreground">
+          Service
+        </h1>
+      </Section>
+
+      <Section width="prose" className="pt-0">
+        <MotionSection>
+          <h2 className="mb-4 font-serif text-xl font-semibold text-foreground">
+            Peer Review
+          </h2>
+          <ul className="list-disc space-y-2 pl-5 text-foreground">
+            {peerReview.map((item) => (
+              <li key={item.venue}>
+                {item.role ? `${item.role} (${item.venue})` : item.venue}
+              </li>
+            ))}
+          </ul>
+        </MotionSection>
+      </Section>
+
+      <Section width="prose" className="pt-0">
+        <MotionSection>
+          <h2 className="mb-4 font-serif text-xl font-semibold text-foreground">
+            Conference Volunteering
+          </h2>
+          <ul className="list-disc space-y-2 pl-5 text-foreground">
+            {conferenceVolunteering.map((item) => (
+              <li key={item.event}>{item.event}</li>
+            ))}
+          </ul>
+        </MotionSection>
+      </Section>
+    </>
+  );
+}
+
+
+
+================================================
+FILE: src/components/AchievementCard.tsx
+================================================
+import Image from "next/image";
+import { Award, Users, Heart } from "lucide-react";
+import type { AchievementItem } from "@/types";
+
+const iconMap = {
+  award: Award,
+  service: Users,
+  community: Heart,
+};
+
+interface AchievementCardProps {
+  item: AchievementItem;
+}
+
+export default function AchievementCard({ item }: AchievementCardProps) {
+  const Icon = iconMap[item.category];
+
+  return (
+    <article className="flex gap-4 rounded-lg border border-border bg-background p-5">
+      <div
+        aria-hidden="true"
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent"
+      >
+        <Icon size={18} />
+      </div>
+      <div>
+        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+          <h3 className="font-serif text-base font-semibold text-foreground">
+            {item.title}
+          </h3>
+          <span className="text-sm text-muted">{item.date}</span>
+        </div>
+        {item.organization && (
+          <p className="text-sm text-muted">{item.organization}</p>
+        )}
+        {item.description && (
+          <p className="mt-1 text-sm leading-relaxed text-foreground">
+            {item.description}
+          </p>
+        )}
+        {item.imageUrl && (
+          <a
+            href={item.imageUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 block w-48 overflow-hidden rounded-md border border-border transition-opacity hover:opacity-90"
+          >
+            <Image
+              src={item.imageUrl}
+              alt={`${item.title} certificate`}
+              width={320}
+              height={224}
+              className="h-auto w-full object-cover"
+            />
+          </a>
+        )}
+      </div>
+    </article>
+  );
+}
+
+
+
+================================================
+FILE: src/components/AvatarPlaceholder.tsx
+================================================
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+
+interface AvatarPlaceholderProps {
+  src?: string;
+  name?: string;
+  size?: number;
+  className?: string;
+}
+
+export default function AvatarPlaceholder({
+  src,
+  name = "Md Imam Ahasan",
+  size = 128,
+  className,
+}: AvatarPlaceholderProps) {
+  if (src) {
+    return (
+      <Image
+        src={src}
+        alt={name}
+        width={size}
+        height={size}
+        className={cn("rounded-full object-cover", className)}
+      />
+    );
+  }
+
+  const initials = name
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+  return (
+    <div
+      role="img"
+      aria-label={name}
+      style={{ width: size, height: size }}
+      className={cn(
+        "flex items-center justify-center rounded-full border border-border bg-accent-soft font-serif text-accent",
+        className,
+      )}
+    >
+      <span style={{ fontSize: size * 0.36 }}>{initials}</span>
+    </div>
+  );
+}
+
+
+
+================================================
+FILE: src/components/Badge.tsx
+================================================
+import { cn } from "@/lib/utils";
+
+interface BadgeProps {
+  children: React.ReactNode;
+  className?: string;
+  variant?: "solid" | "outline";
+}
+
+export default function Badge({
+  children,
+  className,
+  variant = "outline",
+}: BadgeProps) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium tracking-wide",
+        variant === "solid"
+          ? "bg-accent text-white"
+          : "border border-border bg-accent-soft text-accent",
+        className,
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
+
+
+================================================
+FILE: src/components/BibtexButton.tsx
+================================================
+"use client";
+
+import { useState } from "react";
+import { Check, Copy } from "lucide-react";
+
+interface BibtexButtonProps {
+  bibtex: string;
+}
+
+export default function BibtexButton({ bibtex }: BibtexButtonProps) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(bibtex);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard API unavailable - silently ignore
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      className="inline-flex items-center gap-1.5 text-accent underline underline-offset-2 hover:opacity-80"
+      aria-label="Copy BibTeX citation"
+    >
+      {copied ? (
+        <>
+          <Check size={14} aria-hidden="true" /> Copied
+        </>
+      ) : (
+        <>
+          <Copy size={14} aria-hidden="true" /> Copy BibTeX
+        </>
+      )}
+    </button>
+  );
+}
+
+
+
+================================================
+FILE: src/components/Footer.tsx
+================================================
+import { profile } from "@/data/profile";
+import SocialLinks from "@/components/SocialLinks";
+
+export default function Footer() {
+  const year = new Date().getFullYear();
+
+  return (
+    <footer className="border-t border-border">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-10 text-center sm:flex-row sm:justify-between sm:text-left md:px-10 lg:px-16">
+        <p className="text-center text-sm text-muted sm:text-left">
+          © {year} {profile.name}. Built with Next.js.
+        </p>
+        <SocialLinks links={profile.social} />
+      </div>
+    </footer>
+  );
+}
+
+
+
+================================================
+FILE: src/components/icons.tsx
+================================================
+import type { SVGProps } from "react";
+
+interface IconProps extends SVGProps<SVGSVGElement> {
+  size?: number;
+}
+
+export function GithubIcon({ size = 24, ...props }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      width={size}
+      height={size}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.75 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.73 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.7 5.41-5.27 5.69.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.56A10.99 10.99 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5Z" />
+    </svg>
+  );
+}
+
+export function LinkedinIcon({ size = 24, ...props }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      width={size}
+      height={size}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0Z" />
+    </svg>
+  );
+}
+
+export function OrcidIcon({ size = 24, ...props }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      width={size}
+      height={size}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z" />
+    </svg>
+  );
+}
+
+export function ResearchgateIcon({ size = 24, ...props }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      width={size}
+      height={size}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M19.586 0c-.818 0-1.508.19-2.073.565-.563.377-.97.936-1.213 1.68a3.193 3.193 0 0 0-.112.437 8.365 8.365 0 0 0-.078.53 9 9 0 0 0-.05.727c-.01.282-.013.621-.013 1.016a31.121 31.123 0 0 0 .014 1.017 9 9 0 0 0 .05.727 7.946 7.946 0 0 0 .077.53h-.005a3.334 3.334 0 0 0 .113.438c.245.743.65 1.303 1.214 1.68.565.376 1.256.564 2.075.564.8 0 1.536-.213 2.105-.603.57-.39.94-.916 1.175-1.65.076-.235.135-.558.177-.93a10.9 10.9 0 0 0 .043-1.207v-.82c0-.095-.047-.142-.14-.142h-3.064c-.094 0-.14.047-.14.141v.956c0 .094.046.14.14.14h1.666c.056 0 .084.03.084.086 0 .36 0 .62-.036.865-.038.244-.1.447-.147.606-.108.385-.348.664-.638.876-.29.212-.738.35-1.227.35-.545 0-.901-.15-1.21-.353-.306-.203-.517-.454-.67-.915a3.136 3.136 0 0 1-.147-.762 17.366 17.367 0 0 1-.034-.656c-.01-.26-.014-.572-.014-.939a26.401 26.403 0 0 1 .014-.938 15.821 15.822 0 0 1 .035-.656 3.19 3.19 0 0 1 .148-.76 1.89 1.89 0 0 1 .742-1.01c.344-.244.593-.352 1.137-.352.508 0 .815.096 1.144.303.33.207.528.492.764.925.047.094.111.118.198.07l1.044-.43c.075-.048.09-.115.042-.199a3.549 3.549 0 0 0-.466-.742 3 3 0 0 0-.679-.607 3.313 3.313 0 0 0-.903-.41A4.068 4.068 0 0 0 19.586 0zM8.217 5.836c-1.69 0-3.036.086-4.297.086-1.146 0-2.291 0-3.007-.029v.831l1.088.2c.744.144 1.174.488 1.174 2.264v11.288c0 1.777-.43 2.12-1.174 2.263l-1.088.2v.832c.773-.029 2.12-.086 3.465-.086 1.29 0 2.951.057 3.667.086v-.831l-1.49-.2c-.773-.115-1.174-.487-1.174-2.264v-4.784c.688.057 1.29.057 2.206.057 1.748 3.123 3.41 5.472 4.355 6.56.86 1.032 2.177 1.691 3.839 1.691.487 0 1.003-.086 1.318-.23v-.744c-1.031 0-2.063-.716-2.808-1.518-1.26-1.376-2.95-3.582-4.355-6.074 2.32-.545 4.04-2.722 4.04-4.9 0-3.208-2.492-4.698-5.758-4.698zm-.515 1.29c2.406 0 3.839 1.26 3.839 3.552 0 2.263-1.547 3.782-4.097 3.782-.974 0-1.404-.03-2.063-.086v-7.19c.66-.059 1.547-.059 2.32-.059z" />
+    </svg>
+  );
+}
+
+
+
+================================================
+FILE: src/components/MotionSection.tsx
+================================================
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+
+interface MotionSectionProps {
+  children: React.ReactNode;
+  className?: string;
+  index?: number;
+}
+
+export default function MotionSection({
+  children,
+  className,
+  index = 0,
+}: MotionSectionProps) {
+  const reduceMotion = useReducedMotion();
+
+  if (reduceMotion) {
+    return <div className={className}>{children}</div>;
+  }
+
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 8 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+
+
+================================================
+FILE: src/components/Navbar.tsx
+================================================
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { navLinks } from "@/lib/nav";
+import { cn } from "@/lib/utils";
+import ThemeToggle from "@/components/ThemeToggle";
+
+export default function Navbar() {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+      <nav
+        aria-label="Primary"
+        className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10 lg:px-16"
+      >
+        <Link
+          href="/"
+          className="font-serif text-lg font-semibold tracking-tight text-foreground"
+          onClick={() => setOpen(false)}
+        >
+          Md Imam Ahasan
+        </Link>
+
+        <ul className="hidden items-center gap-6 md:flex">
+          {navLinks.map((link) => {
+            const active =
+              link.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(link.href);
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "text-sm transition-colors hover:text-accent",
+                    active ? "font-medium text-accent" : "text-muted",
+                  )}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="text-foreground md:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+      </nav>
+
+      {open && (
+        <ul className="flex flex-col gap-1 border-t border-border px-6 py-4 md:hidden">
+          {navLinks.map((link) => {
+            const active =
+              link.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(link.href);
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "block rounded-md px-2 py-2 text-sm transition-colors hover:text-accent",
+                    active ? "font-medium text-accent" : "text-muted",
+                  )}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </header>
+  );
+}
+
+
+
+================================================
+FILE: src/components/NewsList.tsx
+================================================
+import { Fragment } from "react";
+import Badge from "@/components/Badge";
+import type { NewsItem } from "@/data/news";
+
+const categoryLabel: Record<NewsItem["category"], string> = {
+  paper: "Paper",
+  talk: "Talk",
+  recognition: "Recognition",
+  service: "Service",
+};
+
+function renderText(text: string) {
+  return text.split("**").map((chunk, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-semibold text-foreground">
+        {chunk}
+      </strong>
+    ) : (
+      <Fragment key={i}>{chunk}</Fragment>
+    ),
+  );
+}
+
+interface NewsListProps {
+  items: NewsItem[];
+}
+
+export default function NewsList({ items }: NewsListProps) {
+  return (
+    <ol className="divide-y divide-border border-y border-border">
+      {items.map((item, i) => (
+        <li key={i} className="grid gap-2 py-5 sm:grid-cols-[100px_1fr]">
+          <p className="text-sm text-muted">{item.date}</p>
+          <div>
+            <Badge className="mb-2">{categoryLabel[item.category]}</Badge>
+            <p className="leading-relaxed text-foreground">
+              {renderText(item.text)}
+            </p>
+            {item.links && item.links.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {item.links.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Badge className="hover:opacity-80">{link.label}</Badge>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+
+
+================================================
+FILE: src/components/ProjectCard.tsx
+================================================
+import type { Project } from "@/types";
+import Badge from "@/components/Badge";
+
+interface ProjectCardProps {
+  project: Project;
+}
+
+export default function ProjectCard({ project }: ProjectCardProps) {
+  return (
+    <article className="rounded-lg border border-border bg-background p-6">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 className="font-serif text-lg font-semibold text-foreground">
+          {project.title}
+        </h3>
+        <span className="text-sm text-muted">{project.period}</span>
+      </div>
+
+      <dl className="mt-3 space-y-2 text-sm leading-relaxed">
+        <div>
+          <dt className="font-medium text-foreground">Problem</dt>
+          <dd className="text-muted">{project.problem}</dd>
+        </div>
+        <div>
+          <dt className="font-medium text-foreground">Approach</dt>
+          <dd className="text-muted">{project.approach}</dd>
+        </div>
+        <div>
+          <dt className="font-medium text-foreground">Result</dt>
+          <dd className="text-muted">{project.result}</dd>
+        </div>
+      </dl>
+
+      <ul className="mt-4 flex flex-wrap gap-2">
+        {project.technology.map((tech) => (
+          <li key={tech}>
+            <Badge>{tech}</Badge>
+          </li>
+        ))}
+      </ul>
+
+      {project.links.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-4 text-sm">
+          {project.links.map((link) => (
+            <a
+              key={link.url}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline underline-offset-2 hover:opacity-80"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </article>
+  );
+}
+
+
+
+================================================
+FILE: src/components/PublicationCard.tsx
+================================================
+import type { Publication } from "@/types";
+import Badge from "@/components/Badge";
+import BibtexButton from "@/components/BibtexButton";
+
+const statusLabel: Record<Publication["status"], string> = {
+  accepted: "Accepted",
+  published: "Published",
+  "under-review": "Under Review",
+};
+
+function AuthorList({ authors }: { authors: string[] }) {
+  return (
+    <p className="text-sm text-muted">
+      {authors.map((author, i) => (
+        <span key={author}>
+          {author === "Md Imam Ahasan" ? (
+            <strong className="font-semibold text-foreground">
+              {author}
+            </strong>
+          ) : (
+            author
+          )}
+          {i < authors.length - 1 ? ", " : ""}
+        </span>
+      ))}
+    </p>
+  );
+}
+
+interface PublicationCardProps {
+  publication: Publication;
+  compact?: boolean;
+}
+
+export default function PublicationCard({
+  publication,
+  compact = false,
+}: PublicationCardProps) {
+  const p = publication;
+
+  return (
+    <article className="rounded-lg border border-border bg-background p-5 transition-shadow hover:shadow-sm">
+      <div className="mb-2 flex flex-wrap items-center gap-2">
+        <span className="font-mono text-xs text-muted">[{p.id}]</span>
+        {p.isFirstAuthor && <Badge variant="solid">First Author</Badge>}
+        {p.ranking && <Badge>{p.ranking}</Badge>}
+        <Badge>{statusLabel[p.status]}</Badge>
+      </div>
+
+      <h3 className="font-serif text-lg font-semibold leading-snug text-foreground">
+        {p.title}
+      </h3>
+
+      <div className="mt-1">
+        <AuthorList authors={p.authors} />
+      </div>
+
+      <p className="mt-1 text-sm text-muted">{p.venue}</p>
+
+      {!compact && (
+        <p className="mt-3 text-sm leading-relaxed text-foreground">
+          {p.gloss}
+        </p>
+      )}
+
+      <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
+        {p.doi && (
+          <a
+            href={`https://doi.org/${p.doi}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent underline underline-offset-2 hover:opacity-80"
+          >
+            DOI
+          </a>
+        )}
+        {p.pdfUrl && (
+          <a
+            href={p.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent underline underline-offset-2 hover:opacity-80"
+          >
+            PDF
+          </a>
+        )}
+        {p.codeUrl && (
+          <a
+            href={p.codeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent underline underline-offset-2 hover:opacity-80"
+          >
+            Code
+          </a>
+        )}
+        <BibtexButton bibtex={p.bibtex} />
+      </div>
+    </article>
+  );
+}
+
+
+
+================================================
+FILE: src/components/ResearchCard.tsx
+================================================
+import type { ResearchProject } from "@/types";
+import { publications } from "@/data/publications";
+import Badge from "@/components/Badge";
+
+const statusLabel: Record<ResearchProject["status"], string> = {
+  accepted: "Accepted",
+  published: "Published",
+  "under-review": "Under Review",
+};
+
+interface ResearchCardProps {
+  project: ResearchProject;
+}
+
+export default function ResearchCard({ project }: ResearchCardProps) {
+  const publication = project.publicationId
+    ? publications.find((p) => p.id === project.publicationId)
+    : undefined;
+
+  return (
+    <article
+      id={project.slug}
+      className="scroll-mt-24 rounded-lg border border-border bg-background p-6"
+    >
+      <div className="mb-2 flex flex-wrap items-center gap-2">
+        <Badge variant="solid">First Author</Badge>
+        {publication?.ranking && <Badge>{publication.ranking}</Badge>}
+        <Badge>{statusLabel[project.status]}</Badge>
+      </div>
+
+      <h3 className="font-serif text-xl font-semibold leading-snug text-foreground">
+        {project.title}
+      </h3>
+
+      <p className="mt-2 text-sm leading-relaxed text-muted">
+        {project.gloss}
+      </p>
+
+      {project.results && (
+        <p className="mt-3 font-mono text-sm text-accent">
+          {project.results}
+        </p>
+      )}
+
+      <dl className="mt-4 space-y-3 text-sm leading-relaxed">
+        <div>
+          <dt className="font-medium text-foreground">Problem</dt>
+          <dd className="text-muted">{project.problem}</dd>
+        </div>
+        <div>
+          <dt className="font-medium text-foreground">Method</dt>
+          <dd className="text-muted">{project.method}</dd>
+        </div>
+        <div>
+          <dt className="font-medium text-foreground">Contribution</dt>
+          <dd className="text-muted">{project.contribution}</dd>
+        </div>
+      </dl>
+
+      <ul className="mt-4 flex flex-wrap gap-2">
+        {project.technologies.map((tech) => (
+          <li key={tech}>
+            <Badge>{tech}</Badge>
+          </li>
+        ))}
+      </ul>
+
+      {publication && (
+        <p className="mt-4 text-sm text-muted">
+          {publication.venue}
+          {publication.doi && (
+            <>
+              {" · "}
+              <a
+                href={`https://doi.org/${publication.doi}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent underline underline-offset-2 hover:opacity-80"
+              >
+                DOI
+              </a>
+            </>
+          )}
+        </p>
+      )}
+    </article>
+  );
+}
+
+
+
+================================================
+FILE: src/components/Section.tsx
+================================================
+import { cn } from "@/lib/utils";
+
+interface SectionProps {
+  children: React.ReactNode;
+  className?: string;
+  width?: "prose" | "wide";
+  as?: "section" | "div";
+  id?: string;
+}
+
+export default function Section({
+  children,
+  className,
+  width = "prose",
+  as: Tag = "section",
+  id,
+}: SectionProps) {
+  return (
+    <Tag id={id} className={cn("py-16 md:py-24", className)}>
+      <div
+        className={cn(
+          "mx-auto px-6 md:px-10 lg:px-16",
+          width === "prose" ? "max-w-3xl" : "max-w-6xl",
+        )}
+      >
+        {children}
+      </div>
+    </Tag>
+  );
+}
+
+
+
+================================================
+FILE: src/components/SocialLinks.tsx
+================================================
+import { Mail, GraduationCap, FileText } from "lucide-react";
+import {
+  GithubIcon,
+  LinkedinIcon,
+  OrcidIcon,
+  ResearchgateIcon,
+} from "@/components/icons";
+import type { SocialLink } from "@/types";
+import { cn } from "@/lib/utils";
+
+const iconMap = {
+  github: GithubIcon,
+  linkedin: LinkedinIcon,
+  mail: Mail,
+  "graduation-cap": GraduationCap,
+  "file-text": FileText,
+  scholar: GraduationCap,
+  orcid: OrcidIcon,
+  openreview: FileText,
+  researchgate: ResearchgateIcon,
+};
+
+interface SocialLinksProps {
+  links: SocialLink[];
+  className?: string;
+}
+
+export default function SocialLinks({ links, className }: SocialLinksProps) {
+  return (
+    <ul className={cn("flex items-center gap-4", className)}>
+      {links.map((link) => {
+        const Icon = iconMap[link.icon];
+        return (
+          <li key={link.label}>
+            <a
+              href={link.url}
+              target={link.url.startsWith("mailto:") ? undefined : "_blank"}
+              rel={
+                link.url.startsWith("mailto:")
+                  ? undefined
+                  : "noopener noreferrer"
+              }
+              aria-label={link.label}
+              className="text-muted transition-colors hover:text-accent"
+            >
+              <Icon size={20} aria-hidden="true" />
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+
+
+================================================
+FILE: src/components/StatsStrip.tsx
+================================================
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface StatsStripProps {
+  stats: Stat[];
+  link?: { label: string; url: string };
+}
+
+export default function StatsStrip({ stats, link }: StatsStripProps) {
+  return (
+    <div>
+      {link && (
+        <div className="mb-3 flex justify-end">
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-accent underline underline-offset-4 hover:opacity-80"
+          >
+            {link.label} &rarr;
+          </a>
+        </div>
+      )}
+      <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-4">
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="flex flex-col gap-1 bg-background px-4 py-5 text-center"
+          >
+            <dt className="order-2 text-xs uppercase tracking-wide text-muted">
+              {stat.label}
+            </dt>
+            <dd className="order-1 font-serif text-2xl font-semibold text-accent">
+              {stat.value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
+
+
+================================================
+FILE: src/components/ThemeProvider.tsx
+================================================
+"use client";
+
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+
+export default function ThemeProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <NextThemesProvider attribute="data-theme" defaultTheme="system" enableSystem>
+      {children}
+    </NextThemesProvider>
+  );
+}
+
+
+
+================================================
+FILE: src/components/ThemeToggle.tsx
+================================================
+"use client";
+
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
+
+export default function ThemeToggle() {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Theme is unknown during SSR (would mismatch the client's resolved theme),
+  // so this mount flag intentionally delays rendering the real icon by one tick.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) {
+    return <div className="h-[22px] w-[22px]" aria-hidden="true" />;
+  }
+
+  const isDark = resolvedTheme === "dark";
+
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      className="text-muted transition-colors hover:text-accent"
+    >
+      {isDark ? <Sun size={20} /> : <Moon size={20} />}
+    </button>
+  );
+}
+
+
+
+================================================
+FILE: src/data/achievements.ts
+================================================
+import type { AchievementItem } from "@/types";
+
+export const achievements: AchievementItem[] = [
+  {
+    id: "cqu-outstanding-graduate",
+    title: "CQU Outstanding International Graduates 2026",
+    organization: "Chongqing University",
+    date: "Jun 2026",
+    description: "Awarded to the top 1% of international graduates.",
+    category: "award",
+    imageUrl: "/images/achievements/cqu-outstanding-graduate.jpg",
+  },
+  {
+    id: "china-photo-contest",
+    title: "3rd Prize, \"China in My Eyes\" Contest",
+    organization:
+      "Center of International Students Mobility Service, Chongqing University",
+    date: "Oct 2024",
+    category: "award",
+    imageUrl: "/images/achievements/chinese-new-year-essay-contest.jpg",
+  },
+  {
+    id: "byd-china-youth-run",
+    title: "Finisher, BYD China Youth Run - Chongqing University Station",
+    organization: "Chongqing University",
+    date: "May 2026",
+    description:
+      "Completed the 10 km community run in 57:33 as part of CQU's \"Ignite Youth\" campus run event.",
+    category: "community",
+    imageUrl: "/images/achievements/byd-china-youth-run-2026.jpg",
+  },
+  {
+    id: "joy-bangla-finalist",
+    title: "Finalist, Joy Bangla Youth Award",
+    organization: "Young Bangla / Centre for Research and Information",
+    date: "Aug 2021",
+    description:
+      "Shopner Khoje recognized as a national finalist for outstanding contribution to youth-led social development.",
+    category: "community",
+    imageUrl: "/images/achievements/joy-bangla-youth-award.jpg",
+  },
+  {
+    id: "shopner-khoje-cofounder",
+    title: "Co-Founder, Shopner Khoje Foundation",
+    date: "Feb 2017 - Present",
+    description: "Charitable organization.",
+    category: "community",
+  },
+  {
+    id: "diu-best-club-performance",
+    title: "Best Club Performance Award",
+    organization: "Daffodil International University",
+    date: "Feb 2020",
+    category: "award",
+  },
+];
+
+
+
+================================================
+FILE: src/data/gallery.ts
+================================================
+export interface GalleryItem {
+  title: string;
+  date: string;
+  caption: string;
+  imageUrl: string;
+}
+
+export const galleryItems: GalleryItem[] = [
+  {
+    title: "Farewell & Honors Ceremony, CQU International Graduates 2026",
+    date: "Jun 2026",
+    caption:
+      "With fellow honorees at Chongqing University's farewell and honors ceremony for 2026 international graduates.",
+    imageUrl: "/images/gallery/honored.jpg",
+  },
+  {
+    title: "Presenting GenDiff at Chongqing University",
+    date: "2026",
+    caption:
+      "Presenting GenDiff research to the College of Computer Science at Chongqing University.",
+    imageUrl: "/images/research-presentation.jpg",
+  },
+  {
+    title: "With My Supervisor, Dr. Guangchao Yang",
+    date: "2026",
+    caption:
+      "A thank-you moment with my supervisor, Dr. Guangchao Yang, College of Computer Science, Chongqing University.",
+    imageUrl: "/images/gallery/with-supervisor.jpg",
+  },
+];
+
+
+
+================================================
+FILE: src/data/news.ts
+================================================
+export interface NewsItem {
+  date: string;
+  category: "paper" | "talk" | "recognition" | "service";
+  /** Plain text; wrap a span in **double asterisks** to render it bold. */
+  text: string;
+  links?: { label: string; url: string }[];
+}
+
+export const newsItems: NewsItem[] = [
+  {
+    date: "Sep 2026",
+    category: "service",
+    text: "Serving as a **Reviewer** for the **World Models for High-Stakes Health (WMHS)** Workshop at **NeurIPS 2026**.",
+  },
+  {
+    date: "Sep 2026",
+    category: "paper",
+    text: "**BiLoG-Net: A Bi-Context Location-Guided Network for Breast Mass Segmentation and Malignancy Classification in Mammography** accepted at Computer Modeling in Engineering and Sciences (**CMES**, SCIE).",
+  },
+  {
+    date: "Aug 2026",
+    category: "paper",
+    text: "**Toward Real-Time LDCT Reconstruction: A Sinogram-Encoded Lightweight GAN with Measurement-Domain Noise Suppression** accepted at Computers, Materials and Continua (**CMC**, SCIE).",
+  },
+  {
+    date: "Jul 2026",
+    category: "service",
+    text: "Invited as a **Reviewer** for the Chinese Conference on Pattern Recognition and Computer Vision (**PRCV 2026**).",
+  },
+  {
+    date: "Jul 2026",
+    category: "service",
+    text: "Serving as an **Ethics Reviewer** for **NeurIPS 2026**.",
+  },
+  {
+    date: "Jun 2026",
+    category: "recognition",
+    text: "Recognized as one of **Chongqing University's** top 1% international graduates (CQU Outstanding International Graduates 2026).",
+  },
+  {
+    date: "May 2026",
+    category: "recognition",
+    text: "Finished the **BYD China Youth Run** 10 km community run at Chongqing University in 57:33.",
+  },
+  {
+    date: "2026",
+    category: "paper",
+    text: "**DACD** accepted at the International Joint Conference on Neural Networks (**IJCNN 2026**, CCF-C).",
+  },
+  {
+    date: "2025",
+    category: "paper",
+    text: "**GeGLUNet** published at the Conference on Pattern Recognition and Computer Vision (**PRCV 2025**, CCF-C).",
+    links: [
+      { label: "DOI", url: "https://doi.org/10.1007/978-981-95-5631-1_35" },
+    ],
+  },
+  {
+    date: "May 2024",
+    category: "recognition",
+    text: '3rd Prize in **Chongqing University\'s** "The Chinese New Year in My Eyes" essay & video competition.',
+  },
+];
+
+
+
+================================================
+FILE: src/data/profile.ts
+================================================
+import type { Profile } from "@/types";
+
+export const profile: Profile = {
+  name: "Md Imam Ahasan",
+  tagline: "AI Researcher working on Computer Vision and Medical Imaging.",
+  email: "emamahasane@gmail.com",
+  secondaryEmail: "emamahasane@stu.cqu.edu.cn",
+  wechatId: "imamahasane",
+  affiliation: "Chongqing University",
+  location: "Chongqing, China",
+  social: [
+    {
+      label: "Google Scholar",
+      url: "https://scholar.google.com/citations?user=BnrvbhMAAAAJ&hl=en",
+      icon: "scholar",
+    },
+    {
+      label: "GitHub",
+      url: "https://github.com/imamahasane",
+      icon: "github",
+    },
+    {
+      label: "LinkedIn",
+      url: "https://linkedin.com/in/imamahasane",
+      icon: "linkedin",
+    },
+    {
+      label: "ORCID",
+      url: "https://orcid.org/0009-0009-8407-2071",
+      icon: "orcid",
+    },
+    {
+      label: "OpenReview",
+      url: "https://openreview.net/profile?id=~Md_Imam_Ahasan1",
+      icon: "openreview",
+    },
+    {
+      label: "ResearchGate",
+      url: "https://www.researchgate.net/profile/Md-Imam-Ahasan-2",
+      icon: "researchgate",
+    },
+    {
+      label: "Email",
+      url: "mailto:emamahasane@gmail.com",
+      icon: "mail",
+    },
+  ],
+};
+
+
+
+================================================
+FILE: src/data/projects.ts
+================================================
+import type { Project } from "@/types";
+
+export const projects: Project[] = [
+  {
+    slug: "ldct-research-code",
+    title: "DACD / GenDiff / LightGAN-LD - Research Codebases",
+    period: "2023 - Present",
+    problem:
+      "Three physics-guided diffusion and GAN frameworks for low-dose CT reconstruction, developed as part of ongoing thesis and collaborative research (see Research page).",
+    approach:
+      "Custom PyTorch training pipelines with mixed precision and multi-GPU support, built around MONAI for medical-imaging-specific data handling.",
+    technology: ["Python", "PyTorch", "MONAI", "Weights & Biases"],
+    result: "Code release in progress - links will be added once repositories are made public.",
+    links: [],
+  },
+  {
+    slug: "gronthon",
+    title: "Gronthon: Bangla PDF to Text Conversion Application",
+    period: "B.Sc. Thesis, 2021",
+    problem:
+      "Bengali-script documents are poorly served by mainstream OCR tooling, which is built and tuned around Latin-script text - a real barrier to digitizing Bengali-language archives.",
+    approach:
+      "An end-to-end OCR pipeline for Bengali script digitization, built as a B.Sc. thesis project at Daffodil International University under Dr. Md Zahid Hasan.",
+    technology: ["Python", "OCR", "Image Processing"],
+    result:
+      "A working end-to-end pipeline converting scanned Bengali PDFs to editable text, distinct from the CT reconstruction research line and demonstrative of broader engineering range.",
+    links: [],
+  },
+];
+
+
+
+================================================
+FILE: src/data/publications.ts
+================================================
+import type { Publication } from "@/types";
+
+export const publications: Publication[] = [
+  {
+    id: "C1",
+    title:
+      "Dose-Aware Cold Diffusion with Physics Consistency for Generalizable Low-Dose CT Reconstruction",
+    authors: [
+      "Md Imam Ahasan",
+      "Guangchao Yang",
+      "A F M Abdun Noor",
+      "S M Hasan Mahmud",
+      "Md Mahfuzur Rahman",
+    ],
+    isFirstAuthor: true,
+    venue: "Intl. Joint Conf. on Neural Networks (IJCNN 2026)",
+    venueType: "conference",
+    ranking: "CCF-C",
+    status: "accepted",
+    year: 2026,
+    pdfUrl:
+      "https://www.researchgate.net/publication/403606252_Dose-Aware_Cold_Diffusion_with_Physics_Consistency_for_Generalizable_Low-Dose_CT_Reconstruction",
+    codeUrl: "https://github.com/imamahasane/DACD",
+    gloss:
+      "Reconstructs clean CT images from noisy low-dose scans more accurately and 3.3× faster than prior methods.",
+    bibtex: `@inproceedings{ahasan2026dacd,
+  title     = {Dose-Aware Cold Diffusion with Physics Consistency for Generalizable Low-Dose CT Reconstruction},
+  author    = {Ahasan, Md Imam and Yang, Guangchao and Noor, A F M Abdun and Mahmud, S M Hasan and Rahman, Md Mahfuzur},
+  booktitle = {International Joint Conference on Neural Networks (IJCNN)},
+  year      = {2026}
+}`,
+  },
+  {
+    id: "C2",
+    title:
+      "GeGLUNet: Structural Retinal Vessel Segmentation via Attention-Gated GeGLU and Contrastive Supervision",
+    authors: [
+      "A F M Abdun Noor",
+      "Md Imam Ahasan",
+      "Mohammad Azam Khan",
+      "Guangchao Yang",
+    ],
+    isFirstAuthor: false,
+    venue: "Conf. on Pattern Recognition and Computer Vision (PRCV 2025)",
+    venueType: "conference",
+    ranking: "CCF-C",
+    status: "published",
+    year: 2025,
+    doi: "10.1007/978-981-95-5631-1_35",
+    codeUrl: "https://github.com/imamahasane/GeGLUNet",
+    gloss:
+      "Segments blood vessels in retinal scans more precisely to support earlier diagnosis of eye disease.",
+    bibtex: `@inproceedings{noor2025geglunet,
+  title     = {GeGLUNet: Structural Retinal Vessel Segmentation via Attention-Gated GeGLU and Contrastive Supervision},
+  author    = {Noor, A F M Abdun and Ahasan, Md Imam and Khan, Mohammad Azam and Yang, Guangchao},
+  booktitle = {Conference on Pattern Recognition and Computer Vision (PRCV)},
+  year      = {2025},
+  doi       = {10.1007/978-981-95-5631-1_35}
+}`,
+  },
+  {
+    id: "C3",
+    title:
+      "MTF-Net: Multi-Modal Temporal Feature Fusion Network for Pedestrian Intention Prediction",
+    authors: [
+      "Md Mahfuzur Rahman",
+      "Pengzhan Zhou",
+      "A F M Abdun Noor",
+      "Md Imam Ahasan",
+    ],
+    isFirstAuthor: false,
+    venue: "Intl. Conf. on Cloud and Network Computing (ICCNC 2026)",
+    venueType: "conference",
+    ranking: "EI",
+    status: "accepted",
+    year: 2026,
+    pdfUrl:
+      "https://www.researchgate.net/publication/408868174_MTF-Net_Multi-Modal_Temporal_Feature_Fusion_Network_for_Pedestrian_Intention_Prediction",
+    codeUrl: "https://github.com/imamahasane/MTF-Net",
+    gloss:
+      "Predicts pedestrian crossing intent from video and sensor data to help autonomous vehicles react earlier.",
+    bibtex: `@inproceedings{rahman2026mtfnet,
+  title     = {MTF-Net: Multi-Modal Temporal Feature Fusion Network for Pedestrian Intention Prediction},
+  author    = {Rahman, Md Mahfuzur and Zhou, Pengzhan and Noor, A F M Abdun and Ahasan, Md Imam},
+  booktitle = {International Conference on Cloud and Network Computing (ICCNC)},
+  year      = {2026}
+}`,
+  },
+  {
+    id: "C4",
+    title:
+      "MoSSGate: Memory-Modulated State-Space Gating for Skin Lesion Segmentation",
+    authors: [
+      "Anum Malik",
+      "Mahnoor Buriro",
+      "Muhammad Younas Khan",
+      "Md Imam Ahasan",
+    ],
+    isFirstAuthor: false,
+    venue: "Intl. Conf. on Cloud and Network Computing (ICCNC 2026)",
+    venueType: "conference",
+    ranking: "EI",
+    status: "accepted",
+    year: 2026,
+    pdfUrl:
+      "https://www.researchgate.net/publication/408872180_MoSSGate_Memory-Modulated_State-Space_Gating_for_Skin_Lesion_Segmentation",
+    codeUrl: "https://github.com/imamahasane/MoSSGate",
+    gloss:
+      "Improves automatic detection of skin lesion boundaries in dermatology images.",
+    bibtex: `@inproceedings{malik2026mossgate,
+  title     = {MoSSGate: Memory-Modulated State-Space Gating for Skin Lesion Segmentation},
+  author    = {Malik, Anum and Buriro, Mahnoor and Khan, Muhammad Younas and Ahasan, Md Imam},
+  booktitle = {International Conference on Cloud and Network Computing (ICCNC)},
+  year      = {2026}
+}`,
+  },
+  {
+    id: "J1",
+    title:
+      "Direction-Curvature Aware Feature Integration for Robust Lane Detection",
+    authors: [
+      "Ahtisham Waheed",
+      "Yunfei Yin",
+      "A F M Abdun Noor",
+      "Md Imam Ahasan",
+    ],
+    isFirstAuthor: false,
+    venue: "Computers, Materials and Continua (CMC)",
+    venueType: "journal",
+    ranking: "SCIE",
+    status: "accepted",
+    year: 2026,
+    doi: "10.32604/cmc.2026.083456",
+    codeUrl: "https://github.com/imamahasane/DCANet",
+    gloss:
+      "Detects road lane markings more robustly on curved and poorly marked roads for autonomous driving.",
+    bibtex: `@article{waheed2026lane,
+  title   = {Direction-Curvature Aware Feature Integration for Robust Lane Detection},
+  author  = {Waheed, Ahtisham and Yin, Yunfei and Noor, A F M Abdun and Ahasan, Md Imam},
+  journal = {Computers, Materials and Continua},
+  year    = {2026}
+}`,
+  },
+  {
+    id: "R1",
+    title: "Dose and Anatomy-Aware Diffusion for Low-Dose CT Reconstruction",
+    authors: [
+      "Md Imam Ahasan",
+      "Chengliang Wang",
+      "A F M Abdun Noor",
+      "Guangchao Yang",
+    ],
+    isFirstAuthor: true,
+    venue: "IEEE Intl. Conf. on Acoustics, Speech and Signal Processing (ICASSP 2027)",
+    venueType: "conference",
+    ranking: "CCF-B",
+    status: "under-review",
+    year: 2027,
+    pdfUrl: "https://arxiv.org/abs/2607.11941",
+    codeUrl: "https://github.com/imamahasane/GenDiff",
+    gloss:
+      "Extends low-dose CT reconstruction to generalize across unseen radiation doses and body regions without retraining.",
+    bibtex: `@inproceedings{ahasan2027gendiff,
+  title     = {Dose and Anatomy-Aware Diffusion for Low-Dose CT Reconstruction},
+  author    = {Ahasan, Md Imam and Wang, Chengliang and Noor, A F M Abdun and Yang, Guangchao},
+  booktitle = {IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  year      = {2027},
+  note      = {Under review}
+}`,
+  },
+  {
+    id: "R2",
+    title:
+      "TSCA-Net: Temporal-Spatial Clique Attention for Interpretable Multimodal Pedestrian Trajectory Prediction",
+    authors: [
+      "Md Mustafizur Rahman",
+      "Guangchao Yang",
+      "A F M Abdun Noor",
+      "Md Imam Ahasan",
+    ],
+    isFirstAuthor: false,
+    venue: "Intl. Conf. on Mobility, Sensing and Networking (MSN 2026)",
+    venueType: "conference",
+    ranking: "CCF-C",
+    status: "under-review",
+    year: 2026,
+    pdfUrl: "https://arxiv.org/abs/2607.11939",
+    codeUrl: "https://github.com/imamahasane/TSCA-Net",
+    gloss:
+      "Forecasts where pedestrians will walk next from multiple sensor views, with interpretable attention maps.",
+    bibtex: `@inproceedings{rahman2026tscanet,
+  title     = {TSCA-Net: Temporal-Spatial Clique Attention for Interpretable Multimodal Pedestrian Trajectory Prediction},
+  author    = {Rahman, Md Mustafizur and Yang, Guangchao and Noor, A F M Abdun and Ahasan, Md Imam},
+  booktitle = {International Conference on Mobility, Sensing and Networking (MSN)},
+  year      = {2026},
+  note      = {Under review}
+}`,
+  },
+  {
+    id: "R3",
+    title:
+      "LightGAN-LD: A Lightweight Generative Adversarial Network for Efficient Low-Dose CT Reconstruction with Sinogram Encoding and Edge-Aware Learning",
+    authors: [
+      "Md Imam Ahasan",
+      "Guangchao Yang",
+      "A F M Abdun Noor",
+      "Mohammad Azam Khan",
+    ],
+    isFirstAuthor: true,
+    venue: "PeerJ Computer Science",
+    venueType: "journal",
+    ranking: "SCIE",
+    status: "under-review",
+    year: 2026,
+    codeUrl: "https://github.com/imamahasane/LightGAN-LD",
+    gloss:
+      "A lighter, faster GAN for low-dose CT reconstruction suited to real-time clinical deployment.",
+    bibtex: `@article{ahasan2026lightganld,
+  title   = {LightGAN-LD: A Lightweight Generative Adversarial Network for Efficient Low-Dose CT Reconstruction with Sinogram Encoding and Edge-Aware Learning},
+  author  = {Ahasan, Md Imam and Yang, Guangchao and Noor, A F M Abdun and Khan, Mohammad Azam},
+  journal = {PeerJ Computer Science},
+  year    = {2026},
+  note    = {Under review}
+}`,
+  },
+  {
+    id: "J2",
+    title:
+      "Toward Real-Time LDCT Reconstruction: A Sinogram-Encoded Lightweight GAN with Measurement-Domain Noise Suppression",
+    authors: [
+      "Md Imam Ahasan",
+      "A F M Abdun Noor",
+      "Kah Ong Michael Goh",
+      "S M Hasan Mahmud",
+    ],
+    isFirstAuthor: true,
+    venue: "Computers, Materials and Continua (CMC)",
+    venueType: "journal",
+    ranking: "SCIE",
+    status: "accepted",
+    year: 2026,
+    gloss:
+      "Suppresses noise directly in the raw scanner data for real-time low-dose CT reconstruction.",
+    bibtex: `@article{ahasan2026realtimeldct,
+  title   = {Toward Real-Time LDCT Reconstruction: A Sinogram-Encoded Lightweight GAN with Measurement-Domain Noise Suppression},
+  author  = {Ahasan, Md Imam and Noor, A F M Abdun and Goh, Kah Ong Michael and Mahmud, S M Hasan},
+  journal = {Computers, Materials and Continua},
+  year    = {2026}
+}`,
+  },
+  {
+    id: "J3",
+    title:
+      "BiLoG-Net: A Bi-Context Location-Guided Network for Breast Mass Segmentation and Malignancy Classification in Mammography",
+    authors: [
+      "A F M Abdun Noor",
+      "Md Imam Ahasan",
+      "Kah Ong Michael Goh",
+      "S M Hasan Mahmud",
+    ],
+    isFirstAuthor: false,
+    venue: "Computer Modeling in Engineering and Sciences (CMES)",
+    venueType: "journal",
+    ranking: "SCIE",
+    status: "accepted",
+    year: 2026,
+    pdfUrl: "https://arxiv.org/abs/2607.10188",
+    codeUrl: "https://github.com/imamahasane/BiLoG-Net",
+    gloss:
+      "Jointly locates and classifies findings in mammograms to support breast cancer screening.",
+    bibtex: `@article{noor2026bilognet,
+  title   = {BiLoG-Net: A Bi-Context Location-Guided Network for Breast Mass Segmentation and Malignancy Classification in Mammography},
+  author  = {Noor, A F M Abdun and Ahasan, Md Imam and Goh, Kah Ong Michael and Mahmud, S M Hasan},
+  journal = {Computer Modeling in Engineering and Sciences},
+  year    = {2026}
+}`,
+  },
+  {
+    id: "R6",
+    title:
+      "Adaptive Cross-Modal Fusion with Sparse Attention for Pedestrian Crossing Intention Prediction",
+    authors: [
+      "Md Mahfuzur Rahman",
+      "Pengzhan Zhou",
+      "A F M Abdun Noor",
+      "Md Imam Ahasan",
+    ],
+    isFirstAuthor: false,
+    venue: "PeerJ Computer Science",
+    venueType: "journal",
+    ranking: "SCIE",
+    status: "under-review",
+    year: 2026,
+    pdfUrl: "https://arxiv.org/abs/2607.12293",
+    codeUrl: "https://github.com/imamahasane/ADAPT",
+    gloss:
+      "Combines multiple sensor modalities to predict pedestrian crossing intent more robustly.",
+    bibtex: `@article{rahman2026crossmodal,
+  title   = {Adaptive Cross-Modal Fusion with Sparse Attention for Pedestrian Crossing Intention Prediction},
+  author  = {Rahman, Md Mahfuzur and Zhou, Pengzhan and Noor, A F M Abdun and Ahasan, Md Imam},
+  journal = {PeerJ Computer Science},
+  year    = {2026},
+  note    = {Under review}
+}`,
+  },
+  {
+    id: "R7",
+    title:
+      "PCDiff: Physics-Conditioned Bayesian Diffusion Model for Low-Dose CT Reconstruction",
+    authors: [
+      "Md Imam Ahasan",
+      "Guangchao Yang",
+      "A F M Abdun Noor",
+      "Mohammad Azam Khan",
+    ],
+    isFirstAuthor: true,
+    venue: "Computer Modeling in Engineering and Sciences (CMES)",
+    venueType: "journal",
+    ranking: "SCIE",
+    status: "under-review",
+    year: 2026,
+    codeUrl: "https://github.com/imamahasane/PCDiff",
+    gloss:
+      "A Bayesian diffusion model that conditions reconstruction on the CT scanner's physics to better quantify uncertainty in low-dose CT images.",
+    bibtex: `@article{ahasan2026pcdiff,
+  title   = {PCDiff: Physics-Conditioned Bayesian Diffusion Model for Low-Dose CT Reconstruction},
+  author  = {Ahasan, Md Imam and Yang, Guangchao and Noor, A F M Abdun and Khan, Mohammad Azam},
+  journal = {Computer Modeling in Engineering and Sciences},
+  year    = {2026},
+  note    = {Under review}
+}`,
+  },
+  {
+    id: "R8",
+    title:
+      "DeltaPath: Gated Delta-Rule Encoding for Efficient Vehicle Trajectory Representation Learning",
+    authors: [
+      "Md Ariful Islam",
+      "Ruiyuan Li",
+      "A F M Abdun Noor",
+      "Md Imam Ahasan",
+    ],
+    isFirstAuthor: false,
+    venue: "IEEE Intl. Conf. on Acoustics, Speech and Signal Processing (ICASSP 2027)",
+    venueType: "conference",
+    ranking: "CCF-B",
+    status: "under-review",
+    year: 2027,
+    gloss:
+      "Learns compact, efficient representations of vehicle trajectories for downstream mobility analysis.",
+    bibtex: `@inproceedings{islam2027deltapath,
+  title     = {DeltaPath: Gated Delta-Rule Encoding for Efficient Vehicle Trajectory Representation Learning},
+  author    = {Islam, Md Ariful and Li, Ruiyuan and Noor, A F M Abdun and Ahasan, Md Imam},
+  booktitle = {IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  year      = {2027},
+  note      = {Under review}
+}`,
+  },
+];
+
+export const firstAuthorPublications = publications.filter(
+  (p) => p.isFirstAuthor,
+);
+
+
+
+================================================
+FILE: src/data/research.ts
+================================================
+import type { EducationItem, ResearchProject, TeachingItem } from "@/types";
+
+export const researchExperience: TeachingItem[] = [
+  {
+    role: "Graduate Research Assistant - Computer Vision Lab",
+    organization: "Chongqing University",
+    location: "China",
+    period: "Sep 2024 - May 2026",
+    description:
+      "Designed DACD, a Poisson-thinning cold diffusion model with physics consistency achieving +1.20 dB PSNR over SOTA and 3.3× faster inference (IJCNN 2026, CCF-C, accepted). Extended to GenDiff with dose-anatomy encoding and structural prior refinement for zero-shot generalization across unseen dose levels and anatomical domains (ICASSP 2027, CCF-B, under review). Developed LightGAN-LD for real-time LDCT reconstruction in collaboration with Dr. Mohammad Azam Khan (KAIST). Supervisor: Dr. Guangchao Yang, College of Computer Science.",
+  },
+  {
+    role: "Lab Assistant - Data Science Lab",
+    organization: "Daffodil International University",
+    location: "Bangladesh",
+    period: "Jun 2020 - Jul 2021",
+    description:
+      "Built and evaluated machine learning and deep learning models for tasks such as breast cancer classification and other Kaggle-based datasets, covering data preprocessing, model training, and performance evaluation. Supervisor: Dr. Md Zahid Hasan, Computer Science and Technology.",
+  },
+];
+
+export const education: EducationItem[] = [
+  {
+    institution: "Chongqing University (CQU)",
+    degree: "M.Sc. in Computer Science",
+    location: "Chongqing, China",
+    period: "Sep 2023 - Jun 2026",
+    gpa: "83.4 / 100 · Fully funded by the Chongqing University President's Scholarship",
+    thesis: "Research on Low-Dose Computed Tomography Image Reconstruction",
+    supervisor: "Dr. Guangchao Yang, College of Computer Science, CQU",
+  },
+  {
+    institution: "Daffodil International University (DIU)",
+    degree: "B.Sc. in Computer Science and Engineering",
+    location: "Dhaka, Bangladesh",
+    period: "Sep 2017 - Sep 2021",
+    gpa: "71.5 / 100",
+    thesis: "Gronthon: Bangla PDF to Text Conversion Application",
+    supervisor: "Dr. Md Zahid Hasan, Computer Science and Technology, DIU",
+  },
+];
+
+export const researchInterests: string[] = [
+  "Computer Vision",
+  "Medical Imaging",
+  "Diffusion Models",
+  "Generative Models",
+  "Scientific Machine Learning",
+];
+
+/**
+ * DRAFT - written to unblock the page, not to ship as-is. This is my best
+ * attempt at your voice from the CV facts alone; it hasn't lived in your
+ * head the way the real thing needs to. Read it, disagree with parts of it,
+ * and rewrite until it sounds like you, not like a summary of your CV.
+ */
+export const researchStatement = `I am an AI and computer vision researcher working across medical image
+analysis and visual perception, with a primary focus on physics-consistent generative models for inverse
+problems in medical imaging. My thesis developed DACD, a cold diffusion model that reformulates image
+reconstruction around the actual physics of dose-reduced CT acquisition - Poisson thinning - rather than
+treating scanner noise as a generic signal to denoise, achieving a PSNR improvement over prior
+state-of-the-art methods alongside a 3.3× faster inference time. GenDiff extends this line of work with
+explicit dose and anatomy conditioning, enabling a single trained model to generalize across dose levels
+and anatomical regions it was never directly trained on. Beyond CT reconstruction, my research spans
+retinal vessel segmentation, dermatological image analysis, and visual perception for autonomous systems -
+work that has shaped how I think about generalization and robustness across the visual recognition
+problems I care about, not only generative reconstruction.`;
+
+/**
+ * DRAFT - same caveat as above. This is the sentence a committee reads to
+ * decide if they're funding a research trajectory, not a finished thesis;
+ * it needs to reflect what you actually want to spend five years on, not
+ * what reads well.
+ */
+export const forwardLookingDirection = `The open question I want to pursue in a PhD is whether this
+physics-consistency principle generalizes beyond CT: most inverse problems in medical imaging - MRI
+reconstruction, PET denoising, sparse-view reconstruction more broadly - have their own well-understood
+measurement physics that current generative priors mostly ignore in favor of generic learned corruption
+models. I want to work out whether conditioning diffusion models on the actual forward operator of each
+modality, rather than a dataset-specific noise model, produces reconstruction methods that transfer across
+modalities instead of needing to be rebuilt for each one - and, longer term, whether that physics grounding
+can support formal reconstruction guarantees that purely data-driven priors can't offer.`;
+
+export const flagshipProjects: ResearchProject[] = [
+  {
+    slug: "dacd",
+    title:
+      "DACD: Dose-Aware Cold Diffusion with Physics Consistency for Generalizable Low-Dose CT Reconstruction",
+    oneLiner:
+      "A Poisson-thinning cold diffusion model with physics consistency for low-dose CT reconstruction.",
+    gloss:
+      "Lower-dose CT scans are safer for patients but produce noisier images; DACD reconstructs clean images from noisy low-dose scans more accurately and 3.3× faster than prior methods.",
+    problem:
+      "Standard diffusion-based CT reconstruction methods are accurate but slow, and often fail to generalize across the wide range of dose levels used in clinical practice.",
+    method:
+      "A cold diffusion framework built on Poisson thinning - modeling the physical noise process of low-dose acquisition directly - combined with an explicit physics-consistency constraint tying the reconstruction back to the measured sinogram.",
+    contribution:
+      "Reformulates the degradation process in cold diffusion around the actual physics of dose-reduced CT acquisition, rather than treating noise as a generic corruption to invert.",
+    results: "+1.20 dB PSNR over SOTA, 3.3× faster inference.",
+    status: "accepted",
+    publicationId: "C1",
+    technologies: ["PyTorch", "Cold Diffusion", "CT/Sinogram Processing"],
+    codeUrl: "https://github.com/imamahasane/DACD",
+  },
+  {
+    slug: "gendiff",
+    title:
+      "GenDiff: Dose and Anatomy-Aware Diffusion for Low-Dose CT Reconstruction",
+    oneLiner:
+      "Dose-anatomy encoding and structural prior refinement for zero-shot generalization across unseen dose levels and anatomical domains.",
+    gloss:
+      "Extends the DACD line of work so a single trained model reconstructs CT images well across dose levels and body regions it was never explicitly trained on.",
+    problem:
+      "A reconstruction model trained at one dose level or anatomical region typically degrades sharply when deployed on a different dose level or body region - a real barrier to clinical deployment.",
+    method:
+      "Explicit dose and anatomy conditioning inside the diffusion process, paired with a structural prior refinement stage that corrects fine anatomical detail after the main reconstruction step.",
+    contribution:
+      "Demonstrates zero-shot generalization across dose levels and anatomical domains without per-setting retraining.",
+    status: "under-review",
+    publicationId: "R1",
+    technologies: ["PyTorch", "Diffusion Models", "Domain Generalization"],
+    paperUrl: "https://arxiv.org/abs/2607.11941",
+    codeUrl: "https://github.com/imamahasane/GenDiff",
+  },
+  {
+    slug: "lightgan-ld",
+    title:
+      "LightGAN-LD: A Lightweight Generative Adversarial Network for Efficient Low-Dose CT Reconstruction with Sinogram Encoding and Edge-Aware Learning",
+    oneLiner:
+      "A lightweight GAN with sinogram encoding and edge-aware learning for efficient low-dose CT reconstruction, developed with Dr. Mohammad Azam Khan (KAIST).",
+    gloss:
+      "A smaller, faster generative model for low-dose CT reconstruction, built for real-time deployment rather than offline processing.",
+    problem:
+      "Diffusion-based reconstruction is accurate but computationally heavy; clinical real-time use cases need a much lighter model without giving up reconstruction quality or edge fidelity.",
+    method:
+      "A lightweight GAN architecture operating directly on sinogram-encoded input with an edge-aware learning objective to preserve diagnostically relevant structural detail.",
+    contribution:
+      "Trades diffusion-model accuracy for GAN-level inference speed while retaining edge fidelity, in an international collaboration with Dr. Mohammad Azam Khan at KAIST. A closely related sinogram-encoded variant targeting real-time measurement-domain noise suppression was accepted as a separate paper in Computers, Materials and Continua (J2).",
+    status: "under-review",
+    publicationId: "R3",
+    technologies: ["PyTorch", "GANs", "Sinogram Processing"],
+    codeUrl: "https://github.com/imamahasane/LightGAN-LD",
+  },
+];
+
+
+
+================================================
+FILE: src/data/service.ts
+================================================
+export interface ReviewRole {
+  venue: string;
+  role?: string;
+}
+
+export interface VolunteerRole {
+  event: string;
+}
+
+export const peerReview: ReviewRole[] = [
+  { venue: "NeurIPS 2026 Workshop WMHS" },
+  { venue: "NeurIPS 2026", role: "Ethics Reviewer" },
+  { venue: "Engineering Applications of Artificial Intelligence (EAAI)" },
+  { venue: "Systems & Soft Computing" },
+  { venue: "Journal of Agriculture and Food Research" },
+  { venue: "PRCV 2025" },
+  { venue: "PRCV 2026" },
+  { venue: "IJCNN 2026" },
+];
+
+export const conferenceVolunteering: VolunteerRole[] = [
+  { event: "ICCNC 2026" },
+  { event: "2018 ICPC Asia Dhaka Regional Contest" },
+  { event: "6th Intl. Conf. on Electronic Engineering and Informatics 2024" },
+  {
+    event:
+      "IEEE Intl. Conf. on Electrical Energy Conversion Systems and Control 2025",
+  },
+];
+
+
+
+================================================
+FILE: src/lib/nav.ts
+================================================
+export const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/publications", label: "Publications" },
+  { href: "/projects", label: "Projects" },
+  { href: "/achievements", label: "Achievements" },
+  { href: "/service", label: "Service" },
+  { href: "/gallery", label: "Gallery" },
+] as const;
+
+
+
+================================================
+FILE: src/lib/utils.ts
+================================================
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+/** Extracts the first 4-digit year from a period/date string like "Sep 2023 – Jun 2026" or "Oct 2024". */
+export function startYear(period: string): number {
+  const match = period.match(/\d{4}/);
+  return match ? parseInt(match[0], 10) : 0;
+}
+
+
+
+================================================
+FILE: src/types/index.ts
+================================================
+export interface Publication {
+  id: string; // "C1", "R3", etc. — matches CV numbering
+  title: string;
+  authors: string[]; // full ordered author list, as printed
+  isFirstAuthor: boolean;
+  isCorrespondingAuthor?: boolean;
+  venue: string; // "IJCNN 2026"
+  venueType: "conference" | "journal";
+  ranking?: string; // "CCF-C" | "CCF-B" | "EI" | "SCIE"
+  status: "accepted" | "published" | "under-review";
+  year: number;
+  doi?: string;
+  pdfUrl?: string; // omit if none exists — do not link a dead placeholder
+  codeUrl?: string;
+  bibtex: string;
+  gloss: string; // one plain-English sentence, no jargon
+}
+
+export interface ResearchProject {
+  slug: string;
+  title: string;
+  oneLiner: string;
+  gloss: string; // plain-English "why this matters" sentence
+  problem: string;
+  method: string;
+  contribution: string;
+  results?: string; // only include real reported numbers
+  status: "accepted" | "published" | "under-review";
+  publicationId?: string; // FK into publications.ts
+  technologies: string[];
+  paperUrl?: string;
+  codeUrl?: string; // omit, don't fake, if unreleased
+}
+
+export interface Project {
+  slug: string;
+  title: string;
+  period: string;
+  problem: string;
+  approach: string;
+  technology: string[];
+  result: string;
+  links: { label: string; url: string }[];
+}
+
+export interface AchievementItem {
+  id: string;
+  title: string;
+  organization?: string;
+  date: string; // "Jun 2026"
+  description?: string;
+  category: "award" | "service" | "community";
+  imageUrl?: string; // omit — falls back to a category icon badge
+}
+
+export interface TeachingItem {
+  role: string;
+  organization: string;
+  location: string;
+  period: string;
+  description?: string;
+}
+
+export interface SocialLink {
+  label: string;
+  url: string;
+  icon:
+    | "github"
+    | "linkedin"
+    | "mail"
+    | "graduation-cap"
+    | "file-text"
+    | "scholar"
+    | "orcid"
+    | "openreview"
+    | "researchgate";
+}
+
+export interface Profile {
+  name: string;
+  tagline: string;
+  email: string;
+  secondaryEmail?: string;
+  wechatId?: string;
+  affiliation: string;
+  location: string;
+  social: SocialLink[];
+}
+
+export interface EducationItem {
+  institution: string;
+  degree: string;
+  location: string;
+  period: string;
+  gpa?: string;
+  thesis?: string;
+  supervisor?: string;
+}
+
+
+
+================================================
+FILE: .github/workflows/deploy.yml
+================================================
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SITE_URL: https://imamahasane.github.io
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+
